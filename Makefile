@@ -8,3 +8,6 @@ run:
 clean:
 	-rm main.o
 	-rm ef-pomodoro
+
+install:
+	cp ef-pomodoro /usr/local/bin/ef-pomodoro
