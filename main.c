@@ -21,6 +21,12 @@ void draw_time_remaining(int frames_remaining, Color c) {
   DrawText(buffer, 15, 15, 50, c);
 }
 
+void draw_cycles_done(int cycles_done) {
+  for (int i = 0; i < cycles_done; i += 1) {
+    DrawText("*", 200 + 20 * i, 15, 20, GRAY);
+  }
+}
+
 int test() {
   char buffer[16];
   char* status;
@@ -44,6 +50,7 @@ int app() {
 
   int state = STATE_WORK_PAUSED;
   int frames_remaining = FRAMES_WORK;
+  int cycles_done = 0;
 
   int frame_count = 0;
   while (!WindowShouldClose()) {
@@ -70,6 +77,7 @@ int app() {
       if (frames_remaining == 0) {
         state = STATE_BREAK_PAUSED;
         frames_remaining = FRAMES_BREAK;
+        cycles_done += 1;
       }
     } else if (state == STATE_BREAK_PAUSED) {
       if (frame_count % 60 < 30) {
@@ -91,6 +99,8 @@ int app() {
         frames_remaining = FRAMES_WORK;
       }
     }
+
+    draw_cycles_done(cycles_done);
 
     EndDrawing();
   }
