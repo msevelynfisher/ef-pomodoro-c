@@ -15,6 +15,12 @@ void seconds_to_str(char* buffer, int seconds) {
   buffer[5] = '\0';
 }
 
+void draw_time_remaining(int frames_remaining, Color c) {
+  char buffer[16];
+  seconds_to_str(buffer, frames_remaining / 60);
+  DrawText(buffer, 15, 15, 50, c);
+}
+
 int test() {
   char buffer[16];
   char* status;
@@ -38,7 +44,6 @@ int app() {
 
   int state = STATE_WORK_PAUSED;
   int frames_remaining = FRAMES_WORK;
-  char buffer[16];
 
   int frame_count = 0;
   while (!WindowShouldClose()) {
@@ -47,16 +52,14 @@ int app() {
     BeginDrawing();
     ClearBackground(BLACK);
 
-    seconds_to_str(buffer, frames_remaining/60);
-
     if (state == STATE_WORK_PAUSED) {
       if (frame_count % 60 < 30) {
-        DrawText(buffer, 15, 15, 50, RED);
+        draw_time_remaining(frames_remaining, RED);
       }
 
       if (IsKeyPressed(KEY_SPACE)) state = STATE_WORK;
     } else if (state == STATE_WORK) {
-      DrawText(buffer, 15, 15, 50, RED);
+      draw_time_remaining(frames_remaining, RED);
 
       if (frames_remaining > 0) frames_remaining -= 1;
 
@@ -70,12 +73,12 @@ int app() {
       }
     } else if (state == STATE_BREAK_PAUSED) {
       if (frame_count % 60 < 30) {
-        DrawText(buffer, 15, 15, 50, BLUE);
+        draw_time_remaining(frames_remaining, BLUE);
       }
 
       if (IsKeyPressed(KEY_SPACE)) state = STATE_BREAK;
     } else /* state == STATE_BREAK */ {
-      DrawText(buffer, 15, 15, 50, BLUE);
+      draw_time_remaining(frames_remaining, BLUE);
       
       if (frames_remaining > 0) frames_remaining -= 1;
 
