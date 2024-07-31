@@ -20,7 +20,7 @@ void seconds_to_str(char* buffer, int seconds) {
 void draw_time_remaining(int frames_remaining, Color c) {
   char buffer[16];
   seconds_to_str(buffer, frames_remaining / 60);
-  DrawText(buffer, 15, 15, 50, c);
+  DrawText(buffer, 30, 15, 50, c);
 }
 
 
@@ -28,6 +28,12 @@ void draw_cycles_done(int cycles_done) {
   for (int i = 0; i < cycles_done; i += 1) {
     DrawText("*", 200 + 20 * i, 15, 20, GRAY);
   }
+}
+
+
+void draw_hotkeys(bool is_paused) {
+  char* txt = is_paused ? "[SPACE] Continue" : "[SPACE] Pause";
+  DrawText(txt, 200, 38, 20, GRAY);
 }
 
 
@@ -72,6 +78,11 @@ int app() {
 
     // draw markings for the number of complete cycles
     draw_cycles_done(cycles_done);
+
+    // draw hotkeys
+    if (IsWindowFocused()) {
+      draw_hotkeys(is_paused);
+    }
 
     // count down
     if (!is_paused && frames_remaining > 0) {
