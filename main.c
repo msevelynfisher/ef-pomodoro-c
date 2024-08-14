@@ -56,6 +56,7 @@ int test() {
 #define STATE_BREAK        3
 
 int app() {
+  SetTraceLogLevel(LOG_WARNING);
   InitWindow(400, 80, "Pomodoro Timer");
   SetTargetFPS(60);
 
